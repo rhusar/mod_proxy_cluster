@@ -1,0 +1,8 @@
+language: c
+addons:
+ apt:
+   packages:
+   - apache2-dev
+script: cd native && cmake . && cmake --build .
+notifications:
+  email: false
