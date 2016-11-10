@@ -149,8 +149,8 @@ typedef struct node_context node_context;
 
 static int proxy_worker_cmp(const void *a, const void *b)
 {
-	const char *route1 = (*(proxy_worker **) a)->s->route;
-	const char *route2 = (*(proxy_worker **) b)->s->route;
+    const char *route1 = (*(proxy_worker **) a)->s->route;
+    const char *route2 = (*(proxy_worker **) b)->s->route;
     return strcmp(route1, route2);
 }
 
@@ -2322,7 +2322,7 @@ static proxy_worker *internal_find_best_byrequests(proxy_balancer *balancer, pro
         }
         const char *session_id_with_route = apr_table_get(r->notes, "session-id");
         char *tokenizer;
-        const char *session_id = session_id_with_route ? strtok_r(strdup(session_id_with_route), ".", &tokenizer) : NULL;
+        const char *session_id = session_id_with_route ? apr_strtok(strdup(session_id_with_route), ".", &tokenizer) : NULL;
         // Determine deterministic route, if session is associated with a route, but that route wasn't used
         if (deterministic_failover && session_id && strchr(session_id_with_route, '.') && workers_length > 0) {
             int i, hash = 0;
