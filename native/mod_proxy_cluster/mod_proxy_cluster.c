@@ -2202,7 +2202,9 @@ static proxy_worker *internal_find_best_byrequests(proxy_balancer *balancer, pro
     // Create a separate array of available workers, to be sorted later
     proxy_worker *workers[balancer->workers->nelts];
     int workers_length = 0;
-    
+    const char *session_id_with_route;
+    char *tokenizer;
+    const char *session_id;
 
 #if HAVE_CLUSTER_EX_DEBUG
     ap_log_error(APLOG_MARK, APLOG_DEBUG, 0, r->server,
@@ -2320,9 +2322,8 @@ static proxy_worker *internal_find_best_byrequests(proxy_balancer *balancer, pro
                 }
             }
         }
-        const char *session_id_with_route = apr_table_get(r->notes, "session-id");
-        char *tokenizer;
-        const char *session_id = session_id_with_route ? apr_strtok(strdup(session_id_with_route), ".", &tokenizer) : NULL;
+        session_id_with_route = apr_table_get(r->notes, "session-id");
+        session_id = session_id_with_route ? apr_strtok(strdup(session_id_with_route), ".", &tokenizer) : NULL;
         // Determine deterministic route, if session is associated with a route, but that route wasn't used
         if (deterministic_failover && session_id && strchr(session_id_with_route, '.') && workers_length > 0) {
             int i, hash = 0;
