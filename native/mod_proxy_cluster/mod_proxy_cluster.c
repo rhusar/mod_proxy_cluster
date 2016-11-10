@@ -91,7 +91,7 @@ static server_rec *main_server = NULL;
 static int creat_bal = CREAT_ROOT;
 
 static int use_alias = 0; /* 1 : Compare Alias with server_name */
-static int deterministic_failover = 1;
+static int deterministic_failover = 0;
 
 static apr_time_t lbstatus_recalc_time = apr_time_from_sec(5); /* recalcul the lbstatus based on number of request in the time interval */
 
@@ -4234,16 +4234,9 @@ static const char*cmd_proxy_cluster_enable_options(cmd_parms *cmd, void *dummy, 
     return NULL;
 }
 
-static const char *cmd_proxy_cluster_deterministic_failover(cmd_parms *cmd, void *dummy, const char *args) {
-    char *val = ap_getword_conf(cmd->pool, &args);
-
-    if (strcasecmp(val, "Off") == 0) {
-        deterministic_failover = 0;
-    } else if (strcasecmp(val, "On") == 0) {
-        deterministic_failover = 1;
-    } else {
-        return "DeterministicFailover must be either without value or On or Off";
-    }
+static const char *cmd_proxy_cluster_deterministic_failover(cmd_parms *parms, void *mconfig, int on)
+{
+    deterministic_failover = on;
 
     return NULL;
 }
