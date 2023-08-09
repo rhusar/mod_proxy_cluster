@@ -14,8 +14,9 @@ tomcat_wait_for_n_nodes 2  || exit 1
 # Copy testapp and wait for its start
 docker cp testapp tomcat8081:/usr/local/tomcat/webapps
 
-# The above statement relies on 'autoDeploy' to be enabled in Tomcat.
-sleep 10
+# The above statement relies on 'autoDeploy' to be enabled in Tomcat; and while the scan interval of auto deploy is 10 seconds,
+# this needs to be adequately higher to propagate the MCMP commands to the reverse-proxies
+sleep 20
 
 # Basic 200 and 404 tests.
 echo "basic 200 and 404 tests"
