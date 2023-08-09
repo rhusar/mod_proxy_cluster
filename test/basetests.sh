@@ -13,6 +13,8 @@ tomcat_wait_for_n_nodes 2  || exit 1
 
 # Copy testapp and wait for its start
 docker cp testapp tomcat8081:/usr/local/tomcat/webapps
+
+# The above statement relies on 'autoDeploy' to be enabled in Tomcat.
 sleep 10
 
 # Basic 200 and 404 tests.
